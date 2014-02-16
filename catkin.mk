@@ -2,8 +2,9 @@ PARENT_WORKSPACE ?= /opt/ros/hydro
 SOURCE_DIR ?= src
 ISOLATED ?= 0
 FORCE_CMAKE ?= 0
-CMAKE_EXTRA_ARGS ?=
-MAKE_EXTRA_ARGS ?=
+CMAKE_EXTRA_ARGS +=
+MAKE_EXTRA_ARGS +=
+DPKG_BUILDPACKAGE_EXTRA_ARGS +=
 
 ifeq ($(ISOLATED),1)
 _ISOLATED := _isolated
@@ -28,7 +29,13 @@ unexport PKG_CONFIG_PATH
 unexport PYTHONPATH
 unexport CPATH
 
-build: build_catkin_make$(_ISOLATED)
+build:
+ifeq ($(DEB_BUILD_ARCH),)
+	$(MAKE) build_catkin_make$(_ISOLATED)
+else
+	@echo "Nothing to be done."
+endif
+
 install: install_catkin_make$(_ISOLATED)
 uninstall: uninstall$(_ISOLATED)
 
@@ -56,4 +63,4 @@ uninstall_isolated:
 	cd $(prefix) && rm -rf bin/ etc/ include/ lib/ share/ .catkin .rosinstall _setup_util.py env.sh setup.*
 	
 deb:
-	dpkg-buildpackage -b -nc -us -uc
+	dpkg-buildpackage -b -us -uc $(DPKG_BUILDPACKAGE_EXTRA_ARGS)
