@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package>
+  <name>catkinmk</name>
+  <version>0.0.0</version>
+  <description>The catkinmk package</description>
+  <maintainer email="johannes@intermodalics.eu">Johannes Meyer</maintainer>->
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
